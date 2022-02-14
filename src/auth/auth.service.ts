@@ -18,10 +18,14 @@ export class AuthService {
     return null;
   }
 
-  async login(user: any) {
-    const payload = { username: user.username, sub: user.userId };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+  async register(user: any) {
+    if (!user) return 'not found';
+    return 'found';
   }
+  // async register(user: any) {
+  //   const payload = { username: user.username, sub: user.userId };
+  //   return {
+  //     access_token: this.jwtService.sign(payload),
+  //   };
+  // }
 }
