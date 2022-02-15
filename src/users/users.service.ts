@@ -17,17 +17,31 @@ export class UsersService {
   }
 
   findOne(user: string): Promise<User> {
-    return this.usersRepository.findOne({firstName: user});
+    const result = this.usersRepository.findOne({ username: user });
+    return result;
   }
 
-  async remove(id: string): Promise<void> {
-    await this.usersRepository.delete(id);
+  async findById(idUser: number): Promise<User> {
+    // console.log(idUser);
+    const result = await this.usersRepository.findOne({ id: idUser });
+    if (!result) {
+      return null;
+    }
+    return result;
   }
 
-  addUser(user: User): string{
+  async remove(id: string): Promise<boolean>  {
+    const user = await this.findById(parseInt(id));
+    if (user) {
+      await this.usersRepository.delete(id);
+      return true;
+    }
+    return null;
+  }
+
+  addUser(user: User): string {
     this.usersRepository.save(user);
-    console.log("samir");
-    return "nice  asat";
+    return 'done';
   }
 
   // async findOne(username: string): Promise<User | undefined> {

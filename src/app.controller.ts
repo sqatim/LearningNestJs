@@ -1,4 +1,13 @@
-import { Controller, Get, Request, Post, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Request,
+  Post,
+  UseGuards,
+  Body,
+  HttpCode,
+} from '@nestjs/common';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { LocalAuthGuard } from './auth/local-auth.guard';
 import { UsersService } from './users/users.service';
@@ -13,12 +22,25 @@ export class AppController {
   // constructor(private usersService: UsersService) {}
   constructor(private authService: AuthService) {}
 
-  // @samir()
-  @UseGuards(LocalAuthGuard)
+  // @UseGuards(LocalAuthGuard)
   @Post('auth/register')
-  async login(@Request() req) {
-    return 'fen a jami';
-    // return this.authService.register(req.user);
+  async login(@Body() user) {
+    return this.authService.register(user);
+  }
+
+  @UseGuards(LocalAuthGuard)
+  @Post('auth/login')
+  sayHello(): string {
+    return 'user Found';
+  }
+
+  @Get('/auth/delete/:id')
+  async delete(@Param() params) {
+    const check = await this.authService.delete(params.id)
+    console.log(check);
+    if(check)
+      return ("deleted");
+    return 'user not Found';
   }
 
   // @UseGuards(JwtAuthGuard)
